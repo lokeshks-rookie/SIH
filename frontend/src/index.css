@@ -111,3 +111,18 @@ body {
 .algorithm-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-deep);
 }
+
+/* ── Sidebar custom scrollbar ── */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-deep);
+}

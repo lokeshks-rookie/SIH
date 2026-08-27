@@ -89,69 +89,104 @@ const navItems = [
 
 export default function DashboardLayout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
+  const [isHoverOpen, setIsHoverOpen] = useState(false);
+  
+  const isOpen = isDesktopSidebarOpen || isHoverOpen;
+  
+  // When isOpen is true, fade in after 1s. When false, fade out immediately.
+  const contentVisibilityClass = isOpen ? 'opacity-100 delay-[250ms]' : 'opacity-0 delay-0';
 
   return (
     <div className="flex h-screen w-full bg-[var(--color-base)] text-[var(--color-text)] overflow-hidden">
       
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-[240px] h-full border-r border-[var(--color-border)] bg-[var(--color-base)] shrink-0">
+      <aside 
+        onMouseLeave={() => setIsHoverOpen(false)}
+        className={`relative h-full flex-shrink-0 hidden md:flex flex-col bg-[var(--color-base)] transition-all duration-300 ease-in-out border-r border-[var(--color-border)] z-20
+          ${isOpen ? 'w-[240px]' : 'w-6'}`}
+      >
         
-        {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-[var(--color-border)]">
-          <a href="/dashboard" className="flex items-center gap-2.5 no-underline group">
-            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-              <circle cx="14" cy="14" r="11" stroke="var(--color-accent-deep)" strokeWidth="1.5" fill="none" />
-              <ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--color-accent-deep)" strokeWidth="1.5" fill="none" transform="rotate(-25 14 14)" />
-              <circle cx="14" cy="5" r="2.5" fill="var(--color-accent-deep)" />
-            </svg>
-            <span className="font-display text-[17px] font-semibold tracking-tight text-[var(--color-text)]">
-              Qdemy
-            </span>
-          </a>
-        </div>
+        {/* Hover peek zone: only active below the logo line (h-16 = 64px) */}
+        {!isDesktopSidebarOpen && (
+          <div
+            onMouseEnter={() => setIsHoverOpen(true)}
+            className="absolute top-16 bottom-0 left-0 w-full z-10"
+            aria-hidden="true"
+          />
+        )}
 
-        {/* Nav Links */}
-        <nav className="flex-1 py-6 px-4 flex flex-col gap-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = window.location.pathname === item.href || 
-                            (item.href !== '/dashboard' && window.location.pathname.startsWith(item.href));
-            return (
-              <a
-                key={item.id}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.history.pushState({}, '', item.href);
-                  window.dispatchEvent(new PopStateEvent('popstate'));
-                }}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors cursor-pointer border-none no-underline w-full text-left
-                  ${isActive 
-                    ? 'text-[var(--color-accent-deep)] bg-[var(--color-accent-light)]/50' 
-                    : 'text-[var(--color-text)]/70 hover:text-[var(--color-text)] hover:bg-[var(--color-card)]/50'
-                  }`}
-              >
-                <span className={isActive ? 'text-[var(--color-accent-deep)]' : 'text-[var(--color-text)]/70'}>
-                  <item.icon />
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
+          className={`absolute top-5 -right-3.5 flex items-center justify-center w-7 h-7 rounded-full border border-[var(--color-border)] bg-[var(--color-base)] hover:bg-[var(--color-card)] hover:border-[var(--color-accent-deep)] transition-colors duration-200 z-50 text-[var(--color-text)]`}
+          aria-label="Toggle desktop sidebar"
+        >
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
+        <div className={`w-full h-full overflow-hidden transition-opacity duration-300 ease-in-out ${contentVisibilityClass}`}>
+          <div className="w-[240px] h-full flex flex-col">
+            
+            {/* Logo */}
+            <div className="h-16 flex items-center px-[22px] border-b border-[var(--color-border)] shrink-0">
+              <a href="/dashboard" className="flex items-center gap-3 no-underline group">
+                <svg width="24" height="24" viewBox="0 0 28 28" fill="none" className="shrink-0">
+                  <circle cx="14" cy="14" r="11" stroke="var(--color-accent-deep)" strokeWidth="1.5" fill="none" />
+                  <ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--color-accent-deep)" strokeWidth="1.5" fill="none" transform="rotate(-25 14 14)" />
+                  <circle cx="14" cy="5" r="2.5" fill="var(--color-accent-deep)" />
+                </svg>
+                <span className={`font-display text-[17px] font-semibold tracking-tight text-[var(--color-text)]`}>
+                  Qdemy
                 </span>
-                {item.label}
               </a>
-            );
-          })}
-        </nav>
+            </div>
 
-        {/* Bottom User Area */}
-        <div className="p-4 border-t border-[var(--color-border)]">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
-              <span className="font-display font-medium text-[13px]">L</span>
+            {/* Nav Links */}
+            <nav className="sidebar-scroll flex-1 py-6 px-[14px] flex flex-col gap-1 overflow-y-auto overflow-x-hidden relative z-20">
+              {navItems.map((item) => {
+                return (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.history.pushState({}, '', item.href);
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }}
+                    className={`group flex items-center gap-3 px-[10px] py-2.5 rounded-lg text-[14px] font-medium transition-colors cursor-pointer border-none no-underline w-full text-left overflow-hidden shrink-0 text-[var(--color-text)]/70 hover:text-[var(--color-accent-deep)] hover:bg-[var(--color-accent-light)]/50`}
+                  >
+                    <span className={`shrink-0 text-[var(--color-text)]/70 group-hover:text-[var(--color-accent-deep)]`}>
+                      <item.icon />
+                    </span>
+                    <span className={`truncate`}>
+                      {item.label}
+                    </span>
+                  </a>
+                );
+              })}
+            </nav>
+
+            {/* Bottom User Area */}
+            <div className="p-4 border-t border-[var(--color-border)] shrink-0 relative z-20 overflow-hidden">
+              <div className="flex items-center gap-3 mb-3 px-[2px]">
+                <div className="w-8 h-8 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
+                  <span className="font-display font-medium text-[13px]">L</span>
+                </div>
+                <div className={`flex-1 min-w-0`}>
+                  <p className="text-[14px] font-medium truncate">Lokesh K S</p>
+                </div>
+              </div>
+              <button className={`w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer`}>
+                Logout
+              </button>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[14px] font-medium truncate">Lokesh K S</p>
-            </div>
+
           </div>
-          <button className="w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer">
-            Logout
-          </button>
         </div>
       </aside>
 
