@@ -62,10 +62,9 @@ export default function App() {
 
   return (
     <>
-      <Splash />
       <Navbar />
       <main>
-        <Hero />
+        <Splash />
         <StatsStrip />
         <Pillars />
         <Features />
