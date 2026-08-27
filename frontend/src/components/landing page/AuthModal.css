@@ -1,0 +1,394 @@
+/* ── Auth Modal Backdrop ── */
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  animation: authBackdropIn 200ms ease-out forwards;
+}
+
+/* ── Auth Modal Card ── */
+.auth-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 16px;
+  border-radius: 16px;
+  padding: 28px 32px;
+  animation: authCardIn 200ms ease-out forwards;
+  overflow-y: auto;
+  max-height: calc(100vh - 40px);
+  background: #EFEDE7; /* Card surface */
+  color: #161514; /* Primary text */
+  border: 1px solid #DEDAD0; /* hairline border */
+}
+
+/* ── Close Button ── */
+.auth-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms ease;
+  color: #161514;
+}
+
+.auth-modal-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ── Heading ── */
+.auth-modal-heading {
+  font-family: 'Fraunces', 'Newsreader', 'GT Sectra', serif;
+  font-weight: 700;
+  font-size: 28px;
+  text-align: center;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── Subtext ── */
+.auth-modal-subtext {
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.4;
+  color: #161514;
+  opacity: 0.7;
+}
+
+/* ── Gap ── */
+.auth-modal-gap {
+  height: 20px;
+}
+
+/* ── OAuth Buttons ── */
+.auth-modal-oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 44px;
+  border-radius: 999px;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+  border: 1px solid #111111;
+  color: #111111;
+  background: transparent;
+}
+
+.auth-modal-oauth-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.auth-modal-oauth-btn + .auth-modal-oauth-btn {
+  margin-top: 12px;
+}
+
+/* ── OR Divider ── */
+.auth-modal-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.auth-modal-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #DEDAD0;
+}
+
+.auth-modal-divider-text {
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #161514;
+  opacity: 0.7;
+}
+
+/* ── Input Fields ── */
+.auth-modal-input-wrapper {
+  position: relative;
+  margin-top: 12px;
+}
+
+.auth-modal-input-wrapper:first-child {
+  margin-top: 0;
+}
+
+.auth-modal-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+  background: #F8F6F0; /* Base background */
+  border: 1px solid #DEDAD0;
+  color: #161514;
+}
+
+.auth-modal-input::placeholder {
+  font-weight: 400;
+  color: #161514;
+  opacity: 0.5;
+}
+
+.auth-modal-input:focus {
+  border-color: #1E3A2B;
+  box-shadow: 0 0 0 1px #1E3A2B;
+}
+
+.auth-modal-input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+.auth-modal-input.has-toggle {
+  padding-right: 44px;
+}
+
+/* ── Password Toggle ── */
+.auth-modal-pw-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 150ms ease, color 150ms ease;
+  color: #161514;
+  opacity: 0.7;
+}
+
+.auth-modal-pw-toggle:hover {
+  color: #1E3A2B;
+  opacity: 1;
+  background: #E4EEE3;
+}
+
+/* ── Forgot Password Link ── */
+.auth-modal-forgot {
+  display: block;
+  text-align: right;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  color: #161514;
+  opacity: 0.7;
+}
+
+.auth-modal-forgot:hover {
+  text-decoration: underline;
+}
+
+/* ── Primary CTA Button ── */
+.auth-modal-cta {
+  width: 100%;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: #111111;
+  color: #ffffff;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 150ms ease, opacity 150ms ease;
+}
+
+.auth-modal-cta:hover:not(:disabled) {
+  background: #1E3A2B;
+}
+
+.auth-modal-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Error Message ── */
+.auth-modal-error {
+  font-size: 13px;
+  color: #ef4444;
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.4;
+  font-family: 'Inter', 'General Sans', sans-serif;
+}
+
+.auth-modal-field-error {
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+  line-height: 1.3;
+  font-family: 'Inter', 'General Sans', sans-serif;
+}
+
+/* ── Password Strength Bar ── */
+.auth-modal-strength-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+  height: 4px;
+}
+
+.auth-modal-strength-segment {
+  flex: 1;
+  border-radius: 2px;
+  transition: background 200ms ease;
+  background: #DEDAD0;
+}
+
+.auth-modal-strength-segment.active.strength-1 {
+  background: #ef4444;
+}
+
+.auth-modal-strength-segment.active.strength-2 {
+  background: #f59e0b;
+}
+
+.auth-modal-strength-segment.active.strength-3 {
+  background: #eab308;
+}
+
+.auth-modal-strength-segment.active.strength-4 {
+  background: #1E3A2B;
+}
+
+/* ── Terms Line ── */
+.auth-modal-terms {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  color: #161514;
+  opacity: 0.7;
+}
+
+.auth-modal-terms-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: none;
+  color: #111111;
+  font-weight: 500;
+}
+
+.auth-modal-terms-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Bottom Switch Line ── */
+.auth-modal-switch {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 16px;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  color: #161514;
+}
+
+.auth-modal-switch-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  padding: 0;
+  color: #1E3A2B;
+}
+
+.auth-modal-switch-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Success Toast ── */
+.auth-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: #1E3A2B;
+  color: #ffffff;
+  font-family: 'Inter', 'General Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  z-index: 200;
+  animation: toastIn 300ms ease-out forwards;
+}
+
+.auth-toast.hiding {
+  animation: toastOut 300ms ease-in forwards;
+}
+
+/* ── Animations ── */
+@keyframes authBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes authCardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+.auth-modal-content {
+  animation: authContentIn 200ms ease-out;
+}
+
+@keyframes authContentIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
