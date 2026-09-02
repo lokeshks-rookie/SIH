@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../auth/AuthProvider';
 
 // Icons for Dashboard
 const IconCheck = () => (
@@ -41,7 +42,8 @@ const IconActivity = () => (
 );
 
 export default function Dashboard() {
-  const studentName = "Lokesh";
+  const { user } = useAuth();
+  const studentName = user?.displayName || user?.email?.split('@')[0] || 'Student';
 
   const foundationalModules = [
     { id: 1, title: "Double-slit Experiment", status: "completed" },
