@@ -345,19 +345,25 @@ const useCircuitStore = create((set, get) => ({
       const circuitJSON = state.toCircuitJSON();
       // Import axios if needed, but fetch works just fine
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${apiUrl}/api/circuits/run`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(circuitJSON),
-      });
-      
-      const data = await response.json();
-      
+      let response;
+      let responseText;
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        response = await fetch(`${apiUrl}/api/circuits/run`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(circuitJSON),
+        });
+        responseText = await response.text();
+        if (response.ok) break;
+        if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+
+      let data;
+      try { data = JSON.parse(responseText); } catch { data = {}; }
       if (!response.ok) {
-        set({ error: data.detail || data.error || 'Simulation service error', isRunning: false });
+        set({ error: data.detail || data.error || `Simulation request failed (${response.status})`, isRunning: false });
         return;
       }
-      
       set({ results: data, isRunning: false });
     } catch (err) {
       set({ error: 'Failed to connect to the simulation proxy. Ensure the backend is running.', isRunning: false });
