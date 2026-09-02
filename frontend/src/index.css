@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* ── SIH Brand Design Tokens ── */
+@theme {
+  --color-base: #F8F6F0;
+  --color-text: #161514;
+  --color-head: #E8E4DA;
+  --color-action: #111111;
+  --color-card: #EFEDE7;
+  --color-accent-deep: #1E3A2B;
+  --color-accent-light: #E4EEE3;
+  --color-structural-dark: #0D0D0D;
+  --color-border: #DEDAD0;
+  --color-white: #FFFFFF;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── Scroll Reveal Animation ── */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 120ms; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 240ms; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 360ms; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 480ms; }
+.reveal-stagger > .reveal:nth-child(6) { transition-delay: 600ms; }
+
+/* ── Probability Bar Animation ── */
+@keyframes barFluctuate0 {
+  0%, 100% { height: 58%; }
+  15% { height: 52%; }
+  30% { height: 61%; }
+  50% { height: 47%; }
+  70% { height: 55%; }
+  85% { height: 50%; }
+}
+
+@keyframes barFluctuate1 {
+  0%, 100% { height: 42%; }
+  15% { height: 48%; }
+  30% { height: 39%; }
+  50% { height: 53%; }
+  70% { height: 45%; }
+  85% { height: 50%; }
+}
+
+@keyframes collapse0 {
+  0% { height: var(--pre-height, 55%); }
+  20% { height: 95%; }
+  100% { height: 95%; }
+}
+
+@keyframes collapse1 {
+  0% { height: var(--pre-height, 45%); }
+  20% { height: 5%; }
+  100% { height: 5%; }
+}
+
+/* ── Pill button scrollbar ── */
+.algorithm-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.algorithm-scroll::-webkit-scrollbar-track {
+  background: var(--color-card);
+  border-radius: 999px;
+}
+.algorithm-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+.algorithm-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-deep);
+}
+
+/* ── Sidebar custom scrollbar ── */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-deep);
+}
