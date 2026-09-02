@@ -29,7 +29,10 @@ app.post('/api/tutor', async (req, res) => {
     }, { headers: { Authorization: `Bearer ${process.env.AI_API_KEY}` } });
     res.json({ reply: response.data.choices?.[0]?.message?.content || 'I could not generate a response.' });
   } catch (error) {
-    res.status(error.response?.status || 502).json({ error: 'The AI tutor could not be reached.' });
+    const providerStatus = error.response?.status;
+    if (providerStatus === 401) return res.status(502).json({ error: 'The AI tutor key was rejected. Update AI_API_KEY in Render.' });
+    if (providerStatus === 429) return res.status(503).json({ error: 'The AI tutor has no available provider quota. Add billing/credits or use a key with available quota.' });
+    res.status(providerStatus || 502).json({ error: 'The AI tutor provider is temporarily unavailable.' });
   }
 });
 
