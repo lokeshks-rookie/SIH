@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import TutorPanel from '../components/TutorPanel';
+import { useAuth } from '../auth/AuthProvider';
 
 // SVG Icons (Light style, 1.5px stroke)
 const IconDashboard = () => (
@@ -88,9 +90,12 @@ const navItems = [
 ];
 
 export default function DashboardLayout({ children }) {
+  const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true);
   const [isHoverOpen, setIsHoverOpen] = useState(false);
+  const [tutorOpen, setTutorOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   
   const isOpen = isDesktopSidebarOpen || isHoverOpen;
   
@@ -175,13 +180,13 @@ export default function DashboardLayout({ children }) {
             <div className="p-4 border-t border-[var(--color-border)] shrink-0 relative z-20 overflow-hidden">
               <div className="flex items-center gap-3 mb-3 px-[2px]">
                 <div className="w-8 h-8 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
-                  <span className="font-display font-medium text-[13px]">L</span>
+                  <span className="font-display font-medium text-[13px]">{(user?.displayName || user?.email || 'S')[0].toUpperCase()}</span>
                 </div>
                 <div className={`flex-1 min-w-0`}>
-                  <p className="text-[14px] font-medium truncate">Lokesh K S</p>
+                  <p className="text-[14px] font-medium truncate">{user?.displayName || user?.email || 'Student'}</p>
                 </div>
               </div>
-              <button className={`w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer`}>
+              <button onClick={() => logout()} className={`w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer`}>
                 Logout
               </button>
             </div>
@@ -223,16 +228,17 @@ export default function DashboardLayout({ children }) {
             </button>
 
             {/* AI Tutor Toggle */}
-            <button className="w-[36px] h-[36px] flex items-center justify-center bg-[var(--color-card)] border border-[var(--color-border)] rounded-full text-[var(--color-accent-deep)] hover:bg-[var(--color-accent-light)]/50 transition-colors cursor-pointer">
+            <button onClick={() => setTutorOpen(true)} aria-label="Open AI tutor" className="w-[36px] h-[36px] flex items-center justify-center bg-[var(--color-card)] border border-[var(--color-border)] rounded-full text-[var(--color-accent-deep)] hover:bg-[var(--color-accent-light)]/50 transition-colors cursor-pointer">
               <IconSparkle />
             </button>
 
             {/* Notifications */}
-            <button className="w-[36px] h-[36px] flex items-center justify-center bg-[var(--color-card)] border border-[var(--color-border)] rounded-full text-[var(--color-text)] hover:bg-[var(--color-border)]/50 transition-colors cursor-pointer relative">
+            <button onClick={() => setNotificationsOpen(!notificationsOpen)} aria-label="Open notifications" className="w-[36px] h-[36px] flex items-center justify-center bg-[var(--color-card)] border border-[var(--color-border)] rounded-full text-[var(--color-text)] hover:bg-[var(--color-border)]/50 transition-colors cursor-pointer relative">
               <IconBell />
               <span className="absolute top-[8px] right-[10px] w-1.5 h-1.5 bg-[#ef4444] rounded-full border border-[var(--color-base)]"></span>
             </button>
           </div>
+          {notificationsOpen && <div className="absolute right-6 top-14 z-40 w-[280px] bg-[var(--color-base)] border border-[var(--color-border)] rounded-[12px] p-4"><p className="font-semibold text-[14px] m-0 mb-2">Notifications</p><p className="text-[13px] text-[var(--color-text)]/70 m-0">Your next lesson is ready to continue.</p></div>}
         </header>
 
         {/* Scrollable Main Content */}
@@ -242,6 +248,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </main>
       </div>
+      {tutorOpen && <TutorPanel onClose={() => setTutorOpen(false)} />}
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (

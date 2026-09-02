@@ -13,13 +13,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navLinks = [
-    { label: 'Learn', href: '/learn' },
-    { label: 'Circuit Builder', href: '/circuit-builder' },
-    { label: 'Playground', href: '/playground' },
-    { label: 'About', href: '/about' },
-  ]
-
   return (
     <>
     <nav
@@ -45,19 +38,6 @@ export default function Navbar() {
         </a>
 
         {/* Center nav links — desktop */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              id={`nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-              className="text-[14px] font-medium text-[var(--color-text)]/70 hover:text-[var(--color-text)] transition-colors duration-200 no-underline relative after:content-[''] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[1.5px] after:bg-[var(--color-accent-deep)] after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
         {/* Right actions */}
         <div className="hidden md:flex items-center gap-3">
           <button
@@ -96,16 +76,6 @@ export default function Navbar() {
         } bg-[var(--color-base)] border-t border-[var(--color-border)]`}
       >
         <div className="px-6 py-4 flex flex-col gap-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-[15px] font-medium text-[var(--color-text)]/70 hover:text-[var(--color-text)] no-underline py-2 transition-colors duration-200"
-            >
-              {link.label}
-            </a>
-          ))}
-          <hr className="border-[var(--color-border)] my-1" />
           <div className="flex gap-3 pt-1">
             <button
               onClick={() => { setAuthView('login'); setIsAuthOpen(true); setMobileOpen(false); }}

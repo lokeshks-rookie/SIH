@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './AuthModal.css';
+import { useAuth } from '../../auth/AuthProvider';
 
 /* ── Phosphor Icons (Inline SVG to avoid dependency) ── */
 const Eye = () => (
@@ -67,6 +68,7 @@ function SuccessToast({ message, onDone }) {
    LOGIN VIEW
    ══════════════════════════════════════════════════════ */
 function LoginView({ switchView, onClose }) {
+  const { login, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -80,12 +82,14 @@ function LoginView({ switchView, onClose }) {
     setError('');
     setLoading(true);
 
-    // Mock login delay
-    setTimeout(() => {
+    try {
+      await login(email.trim(), password);
       setLoading(false);
       onClose();
-      // In real app, redirect or update auth state here
-    }, 1000);
+    } catch (err) {
+      setLoading(false);
+      setError(err.code === 'auth/invalid-credential' ? 'Email or password is incorrect.' : 'Unable to log in. Please try again.');
+    }
   };
 
   return (
@@ -102,7 +106,13 @@ function LoginView({ switchView, onClose }) {
         type="button" 
         className="auth-modal-oauth-btn" 
         id="login-google-btn"
-        onClick={() => { window.location.href = '/dashboard'; }}
+        onClick={async () => {
+          setError('');
+          setLoading(true);
+          try { await loginWithGoogle(); onClose(); }
+          catch { setError('Google sign-in was cancelled or could not be completed.'); }
+          finally { setLoading(false); }
+        }}
       >
         <GoogleIcon />
         <span>Continue with Google</span>
@@ -189,6 +199,7 @@ function LoginView({ switchView, onClose }) {
    SIGNUP VIEW
    ══════════════════════════════════════════════════════ */
 function SignupView({ switchView, onSuccess }) {
+  const { signup, loginWithGoogle } = useAuth();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -226,11 +237,14 @@ function SignupView({ switchView, onSuccess }) {
     setError('');
     setLoading(true);
 
-    // Mock signup delay
-    setTimeout(() => {
+    try {
+      await signup(fullName.trim(), email.trim(), password);
       setLoading(false);
       onSuccess();
-    }, 1000);
+    } catch (err) {
+      setLoading(false);
+      setError(err.code === 'auth/email-already-in-use' ? 'An account already exists for this email.' : 'Unable to create your account. Please try again.');
+    }
   };
 
   return (
@@ -247,7 +261,13 @@ function SignupView({ switchView, onSuccess }) {
         type="button" 
         className="auth-modal-oauth-btn" 
         id="signup-google-btn"
-        onClick={() => { window.location.href = '/dashboard'; }}
+        onClick={async () => {
+          setError('');
+          setLoading(true);
+          try { await loginWithGoogle(); onSuccess(); }
+          catch { setError('Google sign-in was cancelled or could not be completed.'); }
+          finally { setLoading(false); }
+        }}
       >
         <GoogleIcon />
         <span>Continue with Google</span>

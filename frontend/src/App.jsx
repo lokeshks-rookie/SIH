@@ -15,9 +15,11 @@ import Dashboard from './pages/Dashboard'
 import Lesson from './pages/Lesson'
 import CircuitBuilder from './pages/CircuitBuilder'
 import Playground from './pages/Playground'
+import { useAuth } from './auth/AuthProvider'
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const { user, loading } = useAuth()
 
   useEffect(() => {
     const onLocationChange = () => {
@@ -26,6 +28,16 @@ export default function App() {
     window.addEventListener('popstate', onLocationChange)
     return () => window.removeEventListener('popstate', onLocationChange)
   }, [])
+
+  useEffect(() => {
+    const isPublicPath = currentPath === '/'
+    if (!loading && !user && !isPublicPath) {
+      window.history.replaceState({}, '', '/')
+      setCurrentPath('/')
+    }
+  }, [currentPath, loading, user])
+
+  if (loading) return null
 
   if (currentPath === '/dashboard') {
     return (
@@ -47,6 +59,14 @@ export default function App() {
     return (
       <DashboardLayout>
         <Playground />
+      </DashboardLayout>
+    )
+  }
+
+  if (currentPath === '/challenges' || currentPath === '/progress' || currentPath === '/profile') {
+    return (
+      <DashboardLayout>
+        <Dashboard />
       </DashboardLayout>
     )
   }

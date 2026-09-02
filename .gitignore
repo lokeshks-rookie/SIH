@@ -19,6 +19,10 @@ dist/
 dist-ssr/
 build/
 *.local
+.env.*
+!.env.example
+.firebase/
+firebase-debug.log
 
 # IDEs and Editors
 .vscode/
