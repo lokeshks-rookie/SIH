@@ -344,7 +344,8 @@ const useCircuitStore = create((set, get) => ({
     try {
       const circuitJSON = state.toCircuitJSON();
       // Import axios if needed, but fetch works just fine
-      const response = await fetch('http://localhost:3001/api/circuits/run', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/circuits/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(circuitJSON),
