@@ -50,7 +50,10 @@ app.post('/api/tutor', async (req, res) => {
     res.json({ reply: response.data.choices?.[0]?.message?.content || 'I could not generate a response.' });
   } catch (error) {
     const providerStatus = error.response?.status;
+    const providerMessage = error.response?.data?.error?.message || error.message;
+    console.error(`AI tutor provider error (${AI_PROVIDER}/${AI_MODEL}): ${providerStatus || 'network'} ${providerMessage}`);
     if (providerStatus === 400 || providerStatus === 401 || providerStatus === 403) return res.status(502).json({ error: 'The AI tutor key or request was rejected. Check AI_PROVIDER, AI_MODEL, and AI_API_KEY.' });
+    if (providerStatus === 404) return res.status(502).json({ error: `The Gemini model "${AI_MODEL}" was not found or is unavailable for this API key.` });
     if (providerStatus === 429) return res.status(503).json({ error: 'The AI tutor has no available provider quota. Add billing/credits or use a key with available quota.' });
     res.status(providerStatus || 502).json({ error: 'The AI tutor provider is temporarily unavailable.' });
   }
