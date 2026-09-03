@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 const SIMULATION_SERVICE_URL = process.env.SIMULATION_SERVICE_URL || 'http://127.0.0.1:8000/simulate';
 const AI_PROVIDER = (process.env.AI_PROVIDER || 'openai').toLowerCase();
 const AI_API_URL = process.env.AI_API_URL || 'https://api.openai.com/v1/chat/completions';
-const AI_MODEL = process.env.AI_MODEL || (AI_PROVIDER === 'gemini' ? 'gemini-2.5-flash' : 'gpt-4o-mini');
+const AI_MODEL = process.env.AI_MODEL || (AI_PROVIDER === 'gemini' ? 'gemini-3.6-flash' : 'gpt-4o-mini');
 
 const tutorSystemPrompt = 'You are Qdemy, a patient quantum computing tutor. Explain concepts accurately at the student\'s level, use small examples, and help debug circuits. Keep answers concise and use plain text.';
 
