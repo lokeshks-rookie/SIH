@@ -79,11 +79,11 @@ const IconMenu = () => (
 
 const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: IconDashboard, href: '/dashboard' },
-  { id: 'learn', label: 'Learn', icon: IconLearn, href: '/dashboard' },
+  { id: 'learn', label: 'Learn', icon: IconLearn, href: '/progress' },
   { id: 'circuit', label: 'Circuit Builder', icon: IconCircuit, href: '/circuit-builder' },
   { id: 'playground', label: 'Playground', icon: IconPlayground, href: '/playground' },
-  { id: 'challenges', label: 'Challenges', icon: IconCode, href: '/dashboard' },
-  { id: 'progress', label: 'Progress', icon: IconProgress, href: '/dashboard' },
+  { id: 'challenges', label: 'Challenges', icon: IconCode, href: '/challenges' },
+  { id: 'progress', label: 'Progress', icon: IconProgress, href: '/progress' },
   { id: 'profile', label: 'Profile', icon: IconProfile, href: '/dashboard' },
 ];
 
@@ -147,8 +147,12 @@ export default function DashboardLayout({ children }) {
             </div>
 
             {/* Nav Links */}
+            {/* Nav Links */}
             <nav className="sidebar-scroll flex-1 py-6 px-[14px] flex flex-col gap-1 overflow-y-auto overflow-x-hidden relative z-20">
               {navItems.map((item) => {
+                const isActive = window.location.pathname === item.href ||
+                  (item.href !== '/dashboard' && window.location.pathname.startsWith(item.href));
+
                 return (
                   <a
                     key={item.id}
@@ -158,12 +162,16 @@ export default function DashboardLayout({ children }) {
                       window.history.pushState({}, '', item.href);
                       window.dispatchEvent(new PopStateEvent('popstate'));
                     }}
-                    className={`group flex items-center gap-3 px-[10px] py-2.5 rounded-lg text-[14px] font-medium transition-colors cursor-pointer border-none no-underline w-full text-left overflow-hidden shrink-0 text-[var(--color-text)]/70 hover:text-[var(--color-accent-deep)] hover:bg-[var(--color-accent-light)]/50`}
+                    className={`group flex items-center gap-3 px-[10px] py-2.5 rounded-lg text-[14px] font-medium transition-colors cursor-pointer border-none no-underline w-full text-left overflow-hidden shrink-0 ${
+                      isActive
+                        ? 'text-[var(--color-accent-deep)] bg-[var(--color-accent-light)]/60 font-semibold'
+                        : 'text-[var(--color-text)]/70 hover:text-[var(--color-accent-deep)] hover:bg-[var(--color-accent-light)]/40'
+                    }`}
                   >
-                    <span className={`shrink-0 text-[var(--color-text)]/70 group-hover:text-[var(--color-accent-deep)]`}>
+                    <span className={`shrink-0 ${isActive ? 'text-[var(--color-accent-deep)]' : 'text-[var(--color-text)]/70 group-hover:text-[var(--color-accent-deep)]'}`}>
                       <item.icon />
                     </span>
-                    <span className={`truncate`}>
+                    <span className="truncate">
                       {item.label}
                     </span>
                   </a>
@@ -177,11 +185,11 @@ export default function DashboardLayout({ children }) {
                 <div className="w-8 h-8 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center shrink-0">
                   <span className="font-display font-medium text-[13px]">L</span>
                 </div>
-                <div className={`flex-1 min-w-0`}>
-                  <p className="text-[14px] font-medium truncate">Lokesh K S</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-medium truncate m-0">Lokesh K S</p>
                 </div>
               </div>
-              <button className={`w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer`}>
+              <button className="w-full text-left px-3 py-1.5 text-[13px] text-[var(--color-text)]/70 hover:text-[var(--color-text)] font-medium bg-transparent border-none cursor-pointer">
                 Logout
               </button>
             </div>
@@ -203,7 +211,14 @@ export default function DashboardLayout({ children }) {
             >
               <IconMenu />
             </button>
-            <h1 className="font-display font-semibold text-[20px] m-0 hidden sm:block">Dashboard</h1>
+            <h1 className="font-display font-semibold text-[20px] m-0 hidden sm:block">
+              {window.location.pathname === '/progress' ? 'Learning Progress & Analytics' : 
+               window.location.pathname === '/challenges' ? 'Challenges & Skill Assessments' :
+               window.location.pathname === '/circuit-builder' ? 'Quantum Circuit Builder' :
+               window.location.pathname === '/playground' ? 'Algorithm Playground' :
+               window.location.pathname.startsWith('/lesson') ? 'Interactive Lesson' :
+               'Dashboard'}
+            </h1>
           </div>
 
           <div className="flex items-center gap-4">

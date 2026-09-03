@@ -12,6 +12,8 @@ import FinalCTA from './components/landing page/FinalCTA'
 import Footer from './components/landing page/Footer'
 import DashboardLayout from './layouts/DashboardLayout'
 import Dashboard from './pages/Dashboard'
+import Progress from './pages/Progress'
+import Challenges from './pages/Challenges'
 import Lesson from './pages/Lesson'
 import CircuitBuilder from './pages/CircuitBuilder'
 import Playground from './pages/Playground'
@@ -26,6 +28,22 @@ export default function App() {
     window.addEventListener('popstate', onLocationChange)
     return () => window.removeEventListener('popstate', onLocationChange)
   }, [])
+
+  if (currentPath === '/progress' || currentPath === '/learn') {
+    return (
+      <DashboardLayout>
+        <Progress />
+      </DashboardLayout>
+    )
+  }
+
+  if (currentPath === '/challenges') {
+    return (
+      <DashboardLayout>
+        <Challenges />
+      </DashboardLayout>
+    )
+  }
 
   if (currentPath === '/dashboard') {
     return (

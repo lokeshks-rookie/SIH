@@ -161,5 +161,15 @@ def simulate(circuit_input: CircuitInput):
         raise HTTPException(status_code=400, detail=f"Simulation error: {str(e)}")
 
 @app.get("/health")
+@app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/api/models")
+def get_models():
+    return {
+        "models": [
+            {"name": "qiskit-aer", "type": "quantum-simulator", "backends": ["AerSimulator", "Statevector"]},
+            {"name": "statevector", "type": "theoretical-exact"}
+        ]
+    }
